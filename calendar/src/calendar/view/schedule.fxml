@@ -13,7 +13,7 @@
    <children>
       <VBox prefHeight="486.0" prefWidth="358.0">
          <children>
-            <HBox fx:id="pane" alignment="CENTER" prefHeight="57.0" prefWidth="358.0">
+            <HBox fx:id="HBox" alignment="CENTER" prefHeight="57.0" prefWidth="358.0">
                <children>
                   <DatePicker fx:id="date" />
                   <Button fx:id="btnsave" mnemonicParsing="false" onAction="#saveclcik" text="저장">

@@ -13,7 +13,7 @@ public class AppMain extends Application{
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("calendar.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("calendar2.fxml"));
 		Scene scene = new Scene(root); //scene을 만든다
 		stage.setTitle("달력"); // scene에 타이틀을 넣는다
 		stage.setScene(scene);

@@ -12,11 +12,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class MainController implements Initializable{
+public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -56,7 +57,7 @@ public class MainController implements Initializable{
     private Button previous,next, addSchedule;
     
 	@FXML
-    void addclcik(ActionEvent event) throws IOException {
+    void addclick(ActionEvent event) throws IOException {
     	//새창 
     	Parent add = FXMLLoader.load(getClass().getResource("schedule.fxml"));
     	Scene scene = new Scene(add);
@@ -67,6 +68,16 @@ public class MainController implements Initializable{
     	adding.showAndWait();
 	}
     
-    
+	@FXML
+	void listclick(MouseEvent mouseEvent) throws IOException {
+    	Parent add = FXMLLoader.load(getClass().getResource("list.fxml"));
+    	Scene scene = new Scene(add);
+    	Stage adding = new Stage();
+    	
+    	adding.setScene(scene);
+    	adding.show();
+		
+	}
+
 
 }
