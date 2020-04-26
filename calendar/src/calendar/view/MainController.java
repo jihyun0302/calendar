@@ -97,6 +97,4 @@ public class MainController implements Initializable {
 	int month = cal.get(Calendar.MONTH);
 	int day = cal.get(Calendar.DATE);
 	
-	
-	
 }
