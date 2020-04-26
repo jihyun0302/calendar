@@ -97,4 +97,14 @@ public class MainController implements Initializable {
 	int month = cal.get(Calendar.MONTH);
 	int day = cal.get(Calendar.DATE);
 	
+	public void date(){
+		
+		yearTop.setText(year + "년 " + (month + 1)+ "월");
+		
+		Label[] a = new Label[35];
+		
+		
+		
+	}
+	
 }
