@@ -14,12 +14,12 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="68.0" prefWidth="860.0" style="-fx-background-color: white;">
                <children>
-                  <Button fx:id="previous" mnemonicParsing="false" text="&lt;&lt;">
+                  <Button fx:id="leftClick" mnemonicParsing="false" text="&lt;&lt;">
                      <HBox.margin>
                         <Insets left="310.0" right="10.0" />
                      </HBox.margin></Button>
                   <TextField />
-                  <Button fx:id="next" mnemonicParsing="false" text="&gt;&gt;">
+                  <Button fx:id="rightClick" mnemonicParsing="false" text="&gt;&gt;">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin></Button>

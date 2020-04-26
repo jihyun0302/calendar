@@ -20,5 +20,4 @@ public class AppMain extends Application{
 		stage.show();
 		
 	}
-
 }
