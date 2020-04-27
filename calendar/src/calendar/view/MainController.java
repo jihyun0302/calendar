@@ -6,7 +6,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import javax.rmi.CORBA.Util;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,97 +17,110 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MainController implements Initializable {
 
+	@FXML
+	private Button btnPrev;
+	@FXML
+	private Button btnNext;
+	@FXML
+	private Label lblDate;
+	@FXML
+	private Label lblDay;
+	
+	@FXML
+	private Label loginInfo;
+	
+	
+	@FXML
+	private GridPane gridCalendar;
+	
+	public void logout() {
+	}
+	
+	public void prevMonth() {	
+	}
+	
+	public void nextMonth() {
+	}
+	
+	private List<DayController> dayList;
+	
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		dayList = new ArrayList<>();
+		
+		for(int i = 0; i < 5; i++) { //달력의 행
+			for(int j = 0; j < 7; j++) { //달력의 열
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("DayLayout.fxml"));
+				try {
+					AnchorPane ap = loader.load();
+					gridCalendar.add(ap, j, i);
+					DayController dc = loader.getController();
+					dc.setRoot(ap);
+					dayList.add(dc);
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.printf("j : %d, i : %d 번째 그리는 중 오류 발생\n", j, i);
+				}
+			}
+			
+		}
 	}
+
 	
-	Label[] lableList;
-	HBox[] hboxList;
-	
-	@FXML private TextField yearTop;
 	
 	@FXML
-    private HBox HBox;
-    
-    @FXML
-    private Label Label0,Label1,Label2,Label3, Label4,Label5,Label6,Label7,Label8,Label9,
-    			  Label10,Label11,Label12,Label13,Label14,Label15,Label16,Label17,Label18,
-    			  Label19,Label20,Label21,Label22,Label23,Label24,Label25,Label26,Label27,
-    			  Label28,Label29,Label30,Label31,Label32,Label33,Label34,
-    			  Label001,Label002,Label011,Label012,Label021,Label022,
-    			  Label031,Label032,Label041,Label042,Label051,Label052,
-    			  Label061,Label062,
-    			  Label101,Label102,Label111,Label112,Label121,Label122,
-    			  Label131,Label132,Label141,Label142,Label151,Label152,
-    			  Label161,Label162,
-    			  Label201,Label202,Label211,Label212,Label221,Label222,
-    			  Label231,Label232,Label241,Label242,Label251,Label252,
-    			  Label261,Label262,
-    			  Label301,Label302,Label311,Label312,Label321,Label322,
-    			  Label331,Label332,Label341,Label342,Label351,Label352,
-    			  Label361,Label362,
-    			  Label401,Label402,Label411,Label412,Label421,Label422,
-    			  Label431,Label432,Label441,Label442,Label451,Label452,
-    			  Label461,Label462; 
+	private Button previous, next, addSchedule;
 
-    @FXML
-    private VBox VBox0,
-    			 VBox00,VBox01,VBox02,VBox03,VBox04,VBox05,VBox06,
-    			 VBox10,VBox11,VBox12,VBox13,VBox14,VBox15,VBox16,
-    			 VBox20,VBox21,VBox22,VBox23,VBox24,VBox25,VBox26,
-    			 VBox30,VBox31,VBox32,VBox33,VBox34,VBox35,VBox36,
-    			 VBox40,VBox41,VBox42,VBox43,VBox44,VBox45,VBox46;
-
-    @FXML
-    private Button previous,next, addSchedule;
-    
 	@FXML
-    void addclick(ActionEvent event) throws IOException {
-    	//새창 
-    	Parent add = FXMLLoader.load(getClass().getResource("schedule.fxml"));
-    	Scene scene = new Scene(add);
-    	
-    	Stage adding = new Stage();
-    	
-    	adding.setScene(scene);
-    	adding.showAndWait();
+	void addclick(ActionEvent event) throws IOException {
+		// 새창
+		Parent add = FXMLLoader.load(getClass().getResource("schedule.fxml"));
+		Scene scene = new Scene(add);
+
+		Stage adding = new Stage();
+
+		adding.setScene(scene);
+		adding.showAndWait();
 	}
-    
+
 	@FXML
 	void listclick(MouseEvent mouseEvent) throws IOException {
-    	Parent add = FXMLLoader.load(getClass().getResource("list.fxml"));
-    	Scene scene = new Scene(add);
-    	Stage adding = new Stage();
-    	
-    	adding.setScene(scene);
-    	adding.show();
-		
+		Parent add = FXMLLoader.load(getClass().getResource("list.fxml"));
+		Scene scene = new Scene(add);
+		Stage adding = new Stage();
+
+		adding.setScene(scene);
+		adding.show();
+
 	}
 	
-	Calendar cal = Calendar.getInstance(); 
-	Date date = cal.getTime(); 
-	int year = cal.get(Calendar.YEAR); 
-	int month = cal.get(Calendar.MONTH);
-	int day = cal.get(Calendar.DATE);
-	
-	public void date(){
+	public void loadMonthData(YearMonth ym) {
+		LocalDate calendarDate = LocalDate.of(ym.getYear(), ym.getMonthValue(), 1); //해당 년월의 1일을 가져온다.
+		while(!calendarDate.getDayOfWeek().toString().equals("SUNDAY")) { //일요일이 아닐때까지 하루씩 빼간다.
+			calendarDate = calendarDate.minusDays(1); //하루씩 감소
+		}
+		//여기까지 오면 해당주간의 첫째날이 오게된다. 여기서부터 캘린더를 그리기 시작한다.
 		
-		yearTop.setText(year + "년 " + (month + 1)+ "월");
-		
-		Label[] a = new Label[35];
-		
-		
-		
+		for(DayController day : dayList) {
+			day.setDayLabel(calendarDate);
+			calendarDate = calendarDate.plusDays(1); //하루씩 증가
+			day.setCountLabel(0); //처음은 무조건 0으로 고정한다.
+		}
 	}
-	
+
 }
